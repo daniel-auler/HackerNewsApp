@@ -1,6 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
 import { colorTokens } from '@tamagui/themes';
 import * as WebBrowser from 'expo-web-browser';
 import { Platform, TouchableHighlight } from 'react-native';
+import { useMMKVBoolean } from 'react-native-mmkv';
 import { XStack, YStack } from 'tamagui';
 
 import { Subtitle, Title } from '~/tamagui.config';
@@ -12,6 +14,8 @@ type Props = {
 };
 
 const ArticleItem: React.FC<Props> = ({ item }) => {
+  const [isFavorite] = useMMKVBoolean(`article-${item.id}`);
+
   return (
     <TouchableHighlight
       onPress={(e) => {
@@ -34,10 +38,11 @@ const ArticleItem: React.FC<Props> = ({ item }) => {
         borderBottomWidth={1}
         justifyContent="space-between">
         <Title>{item.title}</Title>
-        <XStack>
+        <XStack alignItems="center">
           <Subtitle>
             {item.author} - {formatDate(item.created_at)}
           </Subtitle>
+          {isFavorite && <Ionicons name="heart" size={24} color="red" />}
         </XStack>
       </YStack>
     </TouchableHighlight>

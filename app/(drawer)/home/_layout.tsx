@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { Animated } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { Spinner } from 'tamagui';
@@ -20,71 +19,21 @@ const Page: React.FC = () => {
     queryFn: getArticles,
   });
 
-  const onLeftActionStatusChange = (rowKey) => {
-    console.log('onLeftActionStatusChange', rowKey);
-  };
-
-  const onRightActionStatusChange = (rowKey) => {
-    console.log('onRightActionStatusChange', rowKey);
-  };
-
-  const onRightAction = (rowKey) => {
-    console.log('onRightAction', rowKey);
-  };
-
-  const onLeftAction = (rowKey) => {
-    console.log('onLeftAction', rowKey);
-  };
-
-  const renderHiddenItem = (data, rowMap) => {
-    const rowActionAnimatedValue = new Animated.Value(75);
-    const rowHeightAnimatedValue = new Animated.Value(50);
-    return (
-      <HiddenItem
-        data={data}
-        swipeAnimatedValue={rowMap.swipeAnimatedValue}
-        rightActionActivated={rowMap.rightActionActivated}
-        leftActionActivated={rowMap.leftActionActivated}
-        rowActionAnimatedValue={rowActionAnimatedValue}
-        rowHeightAnimatedValue={rowHeightAnimatedValue}
-      />
-    );
-  };
-
-  // const renderItem = (data, rowMap) => {
-  //   const rowHeightAnimatedValue = new Animated.Value(50);
-  //   return (
-  //       <VisibleItem
-  //           rowHeightAnimatedValue={rowHeightAnimatedValue}
-  //           data={data}
-  //           removeRow={() => deleteRow(rowMap, data.item.key)}
-  //       />
-  //   );
-// };
-
   if (isLoading) return <Spinner size="large" color="$blue10" />;
 
   return (
     <Main>
       <SwipeListView
+        disableRightSwipe
         data={articles}
         renderItem={({ item }: { item: Article }) => <ArticleItem item={item} />}
         keyExtractor={(item: Article) => item.id.toString()}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
-        renderHiddenItem={renderHiddenItem}
-        leftOpenValue={75}
+        renderHiddenItem={(data) => <HiddenItem item={data.item} hasDeleteAction />}
         rightOpenValue={-150}
-        leftActivationValue={100}
-        rightActivationValue={-200}
-        leftActionValue={0}
-        rightActionValue={-500}
-        onLeftAction={onLeftAction}
-        onRightAction={onRightAction}
-        onLeftActionStatusChange={onLeftActionStatusChange}
-        onRightActionStatusChange={onRightActionStatusChange}
+        previewOpenDelay={3000}
       />
     </Main>
   );
 };
-
 export default Page;

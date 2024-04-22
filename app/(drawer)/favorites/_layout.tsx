@@ -7,7 +7,6 @@ import { Article } from '~/types/article';
 
 const Page: React.FC = () => {
   const [favorites] = useMMKVObject<Article[]>('favorites');
-  console.log(favorites);
 
   return (
     <Main>

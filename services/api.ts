@@ -22,7 +22,6 @@ export const getArticles = async (): Promise<Article[]> => {
     : [];
 
   const uniqueArticles = [...new Set(normalizedArticles)] as Article[];
-  console.log('data', JSON.stringify(uniqueArticles, null, 2));
 
   return uniqueArticles;
 };

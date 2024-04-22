@@ -2,27 +2,16 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Animated, StyleSheet, TouchableOpacity } from 'react-native';
 import { useMMKVBoolean, useMMKVObject } from 'react-native-mmkv';
-import { Text, View } from 'tamagui';
+import { Text } from 'tamagui';
 
 import { Article } from '~/types/article';
 
 type HiddenItemType = {
-  data: { item: Article };
-  leftActionActivated: boolean;
-  rightActionActivated: boolean;
-  swipeAnimatedValue: Animated.Value;
-  rowActionAnimatedValue: Animated.Value;
-  rowHeightAnimatedValue: Animated.Value;
+  item: Article;
+  hasDeleteAction?: boolean;
 };
 
-export const HiddenItem = ({
-  data: { item },
-  rightActionActivated,
-  rowActionAnimatedValue,
-  rowHeightAnimatedValue,
-  leftActionActivated,
-  swipeAnimatedValue,
-}: HiddenItemType) => {
+export const HiddenItem = ({ item, hasDeleteAction }: HiddenItemType) => {
   const [isFavorite, setIsFavorite] = useMMKVBoolean(`article-${item.id}`);
   const [favorites, setFavorites] = useMMKVObject<Article[]>('favorites');
   const queryClient = useQueryClient();
@@ -48,77 +37,8 @@ export const HiddenItem = ({
     mutationFn: async (payload: { id: number }) => updateLocalArticleList(payload.id),
   });
 
-  if (rightActionActivated) {
-    Animated.spring(rowActionAnimatedValue, {
-      toValue: 500,
-      useNativeDriver: false,
-    }).start();
-  } else {
-    Animated.spring(rowActionAnimatedValue, {
-      toValue: 75,
-      useNativeDriver: false,
-    }).start();
-  }
-
   return (
-    <Animated.View
-      style={[
-        styles.rowBack,
-        { height: rowHeightAnimatedValue },
-        leftActionActivated && { backgroundColor: 'lightgreen' },
-      ]}>
-      <Text>Left</Text>
-      {!leftActionActivated && (
-        <TouchableOpacity
-          style={[styles.backRightBtn, styles.backRightBtnLeft]}
-          onPress={() => toggleFavorite()}>
-          <FontAwesome
-            name={isFavorite ? 'star' : 'star-o'}
-            size={30}
-            color={isFavorite ? 'green' : 'black'}
-          />
-        </TouchableOpacity>
-      )}
-      {!leftActionActivated && (
-        <Animated.View
-          style={[
-            styles.backRightBtn,
-            styles.backRightBtnRight,
-            { flex: 1, width: rowActionAnimatedValue },
-          ]}>
-          <TouchableOpacity
-            style={[styles.backRightBtn, styles.backRightBtnRight]}
-            onPress={() => console.log('deleted', item.id)}>
-            <Animated.View
-              style={[
-                styles.backTextWhite,
-                {
-                  transform: [
-                    {
-                      scale: swipeAnimatedValue.interpolate({
-                        inputRange: [-90, -45],
-                        outputRange: [1, 0],
-                        extrapolate: 'clamp',
-                      }),
-                    },
-                  ],
-                },
-              ]}>
-              <Text style={styles.backTextWhite}>Delete</Text>
-            </Animated.View>
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-      <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => console.log('deleted', item.id)}>
-        <Text style={styles.backTextWhite}>Delete</Text>
-      </TouchableOpacity>
-    </Animated.View>
-  );
-
-  return (
-    <View style={styles.rowBack}>
+    <Animated.View style={styles.rowBack}>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => toggleFavorite()}>
@@ -128,12 +48,14 @@ export const HiddenItem = ({
           color={isFavorite ? 'green' : 'black'}
         />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => handleDelete.mutate({ id: item.id })}>
-        <Text style={styles.backTextWhite}>Delete</Text>
-      </TouchableOpacity>
-    </View>
+      {hasDeleteAction && (
+        <TouchableOpacity
+          style={[styles.backRightBtn, styles.backRightBtnRight]}
+          onPress={() => handleDelete.mutate({ id: item.id })}>
+          <Text style={styles.backTextWhite}>Delete</Text>
+        </TouchableOpacity>
+      )}
+    </Animated.View>
   );
 };
 
