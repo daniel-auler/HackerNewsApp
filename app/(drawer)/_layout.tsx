@@ -15,7 +15,7 @@ const Layout: React.FC = () => {
         name="home"
         options={{
           title: 'Hacker News',
-          headerShown: true,
+          headerShown: false,
           drawerIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
         }}
       />
@@ -30,12 +30,12 @@ const Layout: React.FC = () => {
         }}
       />
       <Drawer.Screen
-        name="deleted"
+        name="configuration"
         options={{
-          title: 'Deleted',
+          title: 'Configurations',
           headerShown: true,
           drawerIcon: ({ color, size }) => (
-            <Ionicons name="trash-outline" size={size} color={color} />
+            <Ionicons name="cog-outline" size={size} color={color} />
           ),
         }}
       />

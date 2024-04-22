@@ -9,7 +9,7 @@ export const formatDate = (dateString: string): string => {
 
   if (days > 0) {
     if (days === 1) {
-      return "yesterday";
+      return 'yesterday';
     } else {
       return `${days}d`;
     }
@@ -21,3 +21,8 @@ export const formatDate = (dateString: string): string => {
     return `${seconds}s`;
   }
 };
+
+export function handleRegistrationError(errorMessage: string) {
+  alert(errorMessage);
+  throw new Error(errorMessage);
+}

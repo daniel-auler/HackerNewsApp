@@ -1,4 +1,4 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Animated, StyleSheet, TouchableOpacity } from 'react-native';
 import { useMMKVBoolean, useMMKVObject } from 'react-native-mmkv';
@@ -42,10 +42,10 @@ export const HiddenItem = ({ item, hasDeleteAction }: HiddenItemType) => {
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => toggleFavorite()}>
-        <FontAwesome
-          name={isFavorite ? 'star' : 'star-o'}
+        <Ionicons
+          name={isFavorite ? 'heart' : 'heart-outline'}
           size={30}
-          color={isFavorite ? 'green' : 'black'}
+          color={isFavorite ? 'red' : 'black'}
         />
       </TouchableOpacity>
       {hasDeleteAction && (

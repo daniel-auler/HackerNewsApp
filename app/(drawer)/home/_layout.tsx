@@ -1,39 +1,37 @@
-import { useQuery } from '@tanstack/react-query';
-import { RefreshControl } from 'react-native-gesture-handler';
-import { SwipeListView } from 'react-native-swipe-list-view';
-import { Spinner } from 'tamagui';
+import { DrawerToggleButton } from '@react-navigation/drawer';
+import { Stack } from 'expo-router';
+import { useTheme } from 'tamagui';
 
-import ArticleItem from '~/components/ArticleItem/ArticleItem';
-import { HiddenItem } from '~/components/ArticleItem/HiddenItem';
-import { getArticles } from '~/services/api';
-import { Main } from '~/tamagui.config';
-import { Article } from '~/types/article';
+export const unstable_settings = {
+  initialRouteName: 'index',
+};
 
-const Page: React.FC = () => {
-  const {
-    data: articles,
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ['articles'],
-    queryFn: getArticles,
-  });
-
-  if (isLoading) return <Spinner size="large" color="$blue10" />;
+const Layout = () => {
+  const theme = useTheme();
 
   return (
-    <Main>
-      <SwipeListView
-        disableRightSwipe
-        data={articles}
-        renderItem={({ item }: { item: Article }) => <ArticleItem item={item} />}
-        keyExtractor={(item: Article) => item.id.toString()}
-        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
-        renderHiddenItem={(data) => <HiddenItem item={data.item} hasDeleteAction />}
-        rightOpenValue={-150}
-        previewOpenDelay={3000}
+    <Stack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: theme.blue7.get(),
+        },
+        headerTintColor: '#fff',
+      }}>
+      <Stack.Screen
+        name="index"
+        options={{
+          title: 'Hacker News',
+          headerLeft: () => <DrawerToggleButton tintColor="#fff" />,
+        }}
       />
-    </Main>
+      <Stack.Screen
+        name="article/[id]"
+        options={{
+          title: '',
+          headerBackTitle: 'Back',
+        }}
+      />
+    </Stack>
   );
 };
-export default Page;
+export default Layout;
