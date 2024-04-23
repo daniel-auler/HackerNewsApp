@@ -1,7 +1,7 @@
 import { useMMKVObject } from 'react-native-mmkv';
 import { ScrollView } from 'tamagui';
 
-import ArticleItem from '~/components/ArticleItem/ArticleItem';
+import ArticleItem from '~/components/ArticleItem';
 import { Container, Main, Title } from '~/tamagui.config';
 import { Article } from '~/types/article';
 
@@ -15,7 +15,11 @@ const Page: React.FC = () => {
           <Title>No favorites yet</Title>
         </Container>
       )}
-      <ScrollView>{favorites?.map((fav) => <ArticleItem key={fav.id} item={fav} />)}</ScrollView>
+      <ScrollView>
+        {favorites
+          ?.sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
+          .map((fav) => <ArticleItem key={fav.id} item={fav} />)}
+      </ScrollView>
     </Main>
   );
 };

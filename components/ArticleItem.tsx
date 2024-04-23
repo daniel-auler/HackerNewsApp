@@ -39,7 +39,7 @@ const ArticleItem: React.FC<Props> = ({ item }) => {
               <Subtitle>
                 {item.author} - {formatDate(item.created_at)}
               </Subtitle>
-              {isFavorite && <Ionicons name="heart" size={24} color="red" />}
+              {isFavorite && <Ionicons testID="favorite-icon" name="heart" size={24} color="red" />}
             </XStack>
           </YStack>
         </TouchableOpacity>

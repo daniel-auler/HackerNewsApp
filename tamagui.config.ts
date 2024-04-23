@@ -44,6 +44,7 @@ export const Title = styled(H1, {
   color: '#000',
   size: '$5',
   lineHeight: '$2',
+  textAlign: 'left',
 });
 
 export const Subtitle = styled(SizableText, {
