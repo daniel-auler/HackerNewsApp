@@ -16,6 +16,8 @@ Follow these simple steps to get started with the HackerNews App:
 
 3. Finally, start the app by running either `expo run:ios` or `expo run:android`.
 
+*To run unit tests (still not finished): `npm run test`
+
 Please note:
 
 - For the full functionality of the project, including notifications and background tasks, it's recommended to run the app on an iOS device or an Android simulator, in this case you must comment the if statement that checks if is running on a device on `hooks/useLocalNotification.ts`.
