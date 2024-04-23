@@ -20,7 +20,10 @@ Follow these simple steps to get started with the HackerNews App:
 
 Please note:
 
-- For the full functionality of the project, including notifications and background tasks, it's recommended to run the app on an iOS device or an Android simulator.
+- For the full functionality of the project, including notifications and background tasks, it's recommended to run the app on an iOS device or an Android simulator, in this case you must comment the if statement that checks if is running on a device on `hooks/useLocalNotification.ts`.
 - The HackerNews App is not compatible with web browsers and won't function correctly if accessed through a web browser.
+- Unfortunately I didn't had time enough to implement the unit tests as I wanted, but the configuration is done.
+- The lack of API documentation slowed down the process.
+
 
 Enjoy exploring Hacker News with our app! If you encounter any issues or have suggestions for improvements, feel free to open an issue or submit a pull request. Happy coding!
